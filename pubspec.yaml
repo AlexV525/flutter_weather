@@ -1,0 +1,37 @@
+name: weather
+description: A Flutter application for weather.
+
+version: 0.1.0+1
+
+environment:
+  sdk: ">=2.6.0 <3.0.0"
+  flutter: ">=1.12.13+hotfix.5"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cookie_jar: 1.0.1
+  dio: ^3.0.8
+  dio_cookie_manager: 1.0.0
+  hive: ^1.2.0
+  hive_flutter: ^0.2.1
+  path_provider: ^1.5.1
+
+dev_dependencies:
+  build_runner: any
+  flutter_test:
+    sdk: flutter
+  hive_generator: ^0.6.0
+
+flutter:
+  uses-material-design: true
+
+  fonts:
+    - family: "Lexend Exa"
+      fonts:
+        - asset: assets/fonts/lexend_exa.ttf
+
+  # assets:
+  #  - images/a_dot_burr.jpeg
+  #  - images/a_dot_ham.jpeg
