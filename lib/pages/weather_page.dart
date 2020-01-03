@@ -12,6 +12,13 @@ class WeatherPage extends StatefulWidget {
 }
 
 class _WeatherPageState extends State<WeatherPage> {
+  WeatherProvider provider;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   Widget get topBar => SizedBox(
         height: 40.0,
         child: Center(
@@ -98,12 +105,15 @@ class _WeatherPageState extends State<WeatherPage> {
       FetchType.get,
       API.weather,
       data: API.weatherRequestQuery(
-        province: "上海",
-        city: "上海",
+        province: "宁夏",
+        city: "中卫",
       ),
     )
         .then((response) {
-      debugPrint(response.toString());
+      final data = response['data'];
+      final air = Air.fromJson(data['air']);
+      final alarms = data['alarm'].values.map((alarm) => Alarm.fromJson(alarm)).toList();
+      final observeData = Observe.fromJson(data['observe']);
     });
     return Scaffold(
       backgroundColor: Colors.transparent,

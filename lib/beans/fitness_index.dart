@@ -80,46 +80,29 @@ class FitnessIndex extends HiveObject {
   });
 
   FitnessIndex.fromJson(Map<String, dynamic> json) {
-    airConditioner = json['airconditioner'] != null
-        ? Fitness.fromJson(json['airconditioner'])
-        : null;
-    allergy =
-        json['allergy'] != null ? Fitness.fromJson(json['allergy']) : null;
-    carWash =
-        json['carwash'] != null ? Fitness.fromJson(json['carwash']) : null;
+    airConditioner =
+        json['airconditioner'] != null ? Fitness.fromJson(json['airconditioner']) : null;
+    allergy = json['allergy'] != null ? Fitness.fromJson(json['allergy']) : null;
+    carWash = json['carwash'] != null ? Fitness.fromJson(json['carwash']) : null;
     chill = json['chill'] != null ? Fitness.fromJson(json['chill']) : null;
-    clothes =
-        json['clothes'] != null ? Fitness.fromJson(json['clothes']) : null;
+    clothes = json['clothes'] != null ? Fitness.fromJson(json['clothes']) : null;
     cold = json['cold'] != null ? Fitness.fromJson(json['cold']) : null;
-    comfort =
-        json['comfort'] != null ? Fitness.fromJson(json['comfort']) : null;
-    diffusion =
-        json['diffusion'] != null ? Fitness.fromJson(json['diffusion']) : null;
+    comfort = json['comfort'] != null ? Fitness.fromJson(json['comfort']) : null;
+    diffusion = json['diffusion'] != null ? Fitness.fromJson(json['diffusion']) : null;
     dry = json['dry'] != null ? Fitness.fromJson(json['dry']) : null;
     drying = json['drying'] != null ? Fitness.fromJson(json['drying']) : null;
     fish = json['fish'] != null ? Fitness.fromJson(json['fish']) : null;
-    heatstroke = json['heatstroke'] != null
-        ? Fitness.fromJson(json['heatstroke'])
-        : null;
+    heatstroke = json['heatstroke'] != null ? Fitness.fromJson(json['heatstroke']) : null;
     makeup = json['makeup'] != null ? Fitness.fromJson(json['makeup']) : null;
     mood = json['mood'] != null ? Fitness.fromJson(json['mood']) : null;
-    morning =
-        json['morning'] != null ? Fitness.fromJson(json['morning']) : null;
+    morning = json['morning'] != null ? Fitness.fromJson(json['morning']) : null;
     sports = json['sports'] != null ? Fitness.fromJson(json['sports']) : null;
-    sunglasses = json['sunglasses'] != null
-        ? Fitness.fromJson(json['sunglasses'])
-        : null;
-    sunscreen =
-        json['sunscreen'] != null ? Fitness.fromJson(json['sunscreen']) : null;
-    tourism =
-        json['tourism'] != null ? Fitness.fromJson(json['tourism']) : null;
-    traffic =
-        json['traffic'] != null ? Fitness.fromJson(json['traffic']) : null;
-    ultraviolet = json['ultraviolet'] != null
-        ? Fitness.fromJson(json['ultraviolet'])
-        : null;
-    umbrella =
-        json['umbrella'] != null ? Fitness.fromJson(json['umbrella']) : null;
+    sunglasses = json['sunglasses'] != null ? Fitness.fromJson(json['sunglasses']) : null;
+    sunscreen = json['sunscreen'] != null ? Fitness.fromJson(json['sunscreen']) : null;
+    tourism = json['tourism'] != null ? Fitness.fromJson(json['tourism']) : null;
+    traffic = json['traffic'] != null ? Fitness.fromJson(json['traffic']) : null;
+    ultraviolet = json['ultraviolet'] != null ? Fitness.fromJson(json['ultraviolet']) : null;
+    umbrella = json['umbrella'] != null ? Fitness.fromJson(json['umbrella']) : null;
     time = json['time'];
   }
 
@@ -193,5 +176,10 @@ class FitnessIndex extends HiveObject {
     }
     data['time'] = this.time;
     return data;
+  }
+
+  @override
+  String toString() {
+    return 'FitnessIndex ${JsonEncoder.withIndent('  ').convert(toJson())}';
   }
 }

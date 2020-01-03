@@ -52,4 +52,9 @@ class ForecastPerHour extends HiveObject {
     data['wind_power'] = this.windPower;
     return data;
   }
+
+  @override
+  String toString() {
+    return 'ForecastPerHour ${JsonEncoder.withIndent('  ').convert(toJson())}';
+  }
 }

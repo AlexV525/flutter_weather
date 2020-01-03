@@ -1,7 +1,7 @@
 name: weather
 description: A Flutter application for weather.
 
-version: 0.1.0+1
+version: 0.1.0+2
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
@@ -17,6 +17,7 @@ dependencies:
   hive: ^1.2.0
   hive_flutter: ^0.2.1
   path_provider: ^1.5.1
+  provider: ^4.0.0
 
 dev_dependencies:
   build_runner: any

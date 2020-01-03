@@ -49,12 +49,14 @@ class API {
 
   static Map<String, dynamic> weatherRequestQuery({
     List<String> types = const [
+      'air',
+      'alarm',
       'forecast_1h',
       'forecast_24h',
-      'alarm',
       'index',
       'limit',
-      'tips'
+      'observe',
+      'rise',
     ],
     @required String province,
     @required String city,

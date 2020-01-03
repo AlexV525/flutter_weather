@@ -7,5 +7,6 @@ export 'package:weather/constants/beans.dart';
 export 'package:weather/constants/hive_boxes.dart';
 export 'package:weather/constants/screens.dart';
 export 'package:weather/constants/pages.dart';
+export 'package:weather/providers/providers.dart';
 
 class Constants {}

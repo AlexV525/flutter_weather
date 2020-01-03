@@ -5,7 +5,7 @@
 part of '../constants/beans.dart';
 
 @HiveType()
-class Air {
+class Air extends HiveObject {
   @HiveField(0)
   int aqi;
   @HiveField(1)
@@ -66,5 +66,10 @@ class Air {
     data['so2'] = this.so2;
     data['update_time'] = this.updateTime;
     return data;
+  }
+
+  @override
+  String toString() {
+    return 'Air ${JsonEncoder.withIndent('  ').convert(toJson())}';
   }
 }

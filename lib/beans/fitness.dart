@@ -28,4 +28,9 @@ class Fitness extends HiveObject {
     data['name'] = this.name;
     return data;
   }
+
+  @override
+  String toString() {
+    return 'Fitness ${JsonEncoder.withIndent('  ').convert(toJson())}';
+  }
 }

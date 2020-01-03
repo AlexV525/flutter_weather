@@ -102,4 +102,9 @@ class ForecastPerDay extends HiveObject {
     data['time'] = this.time;
     return data;
   }
+
+  @override
+  String toString() {
+    return 'ForecastPerDay ${JsonEncoder.withIndent('  ').convert(toJson())}';
+  }
 }
