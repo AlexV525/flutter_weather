@@ -16,6 +16,9 @@ class Fitness extends HiveObject {
   Fitness({this.detail, this.info, this.name});
 
   Fitness.fromJson(Map<String, dynamic> json) {
+    json.forEach((k, v) {
+      if (json[k] == "") json[k] = null;
+    });
     detail = json['detail'];
     info = json['info'];
     name = json['name'];

@@ -4,17 +4,29 @@
 ///
 part of '../constants/beans.dart';
 
-class Alarm {
+@HiveType()
+class Alarm extends HiveObject {
+  @HiveField(0)
   String city;
+  @HiveField(1)
   String county;
+  @HiveField(2)
   String detail;
+  @HiveField(3)
   String info;
+  @HiveField(4)
   String levelCode;
+  @HiveField(5)
   String levelName;
+  @HiveField(6)
   String province;
+  @HiveField(7)
   String typeCode;
+  @HiveField(8)
   String typeName;
+  @HiveField(9)
   String updateTime;
+  @HiveField(10)
   String url;
 
   Alarm({
@@ -32,6 +44,9 @@ class Alarm {
   });
 
   Alarm.fromJson(Map<String, dynamic> json) {
+    json.forEach((k, v) {
+      if (json[k] == "") json[k] = null;
+    });
     city = json['city'];
     county = json['county'];
     detail = json['detail'];
@@ -46,7 +61,7 @@ class Alarm {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final data = <String, dynamic>{};
     data['city'] = this.city;
     data['county'] = this.county;
     data['detail'] = this.detail;

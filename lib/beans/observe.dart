@@ -5,31 +5,45 @@
 part of '../constants/beans.dart';
 
 @HiveType()
-class Observe {
+class Observe extends HiveObject {
+  @HiveField(0)
   String degree;
+  @HiveField(1)
   String humidity;
+  @HiveField(2)
   String precipitation;
+  @HiveField(3)
   String pressure;
+  @HiveField(4)
   String updateTime;
+  @HiveField(5)
   String weather;
+  @HiveField(6)
   String weatherCode;
+  @HiveField(7)
   String weatherShort;
+  @HiveField(8)
   String windDirection;
+  @HiveField(9)
   String windPower;
 
-  Observe(
-      {this.degree,
-      this.humidity,
-      this.precipitation,
-      this.pressure,
-      this.updateTime,
-      this.weather,
-      this.weatherCode,
-      this.weatherShort,
-      this.windDirection,
-      this.windPower});
+  Observe({
+    this.degree,
+    this.humidity,
+    this.precipitation,
+    this.pressure,
+    this.updateTime,
+    this.weather,
+    this.weatherCode,
+    this.weatherShort,
+    this.windDirection,
+    this.windPower,
+  });
 
   Observe.fromJson(Map<String, dynamic> json) {
+    json.forEach((k, v) {
+      if (json[k] == "") json[k] = null;
+    });
     degree = json['degree'];
     humidity = json['humidity'];
     precipitation = json['precipitation'];

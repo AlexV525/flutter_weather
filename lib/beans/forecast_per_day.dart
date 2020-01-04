@@ -62,6 +62,9 @@ class ForecastPerDay extends HiveObject {
   });
 
   ForecastPerDay.fromJson(Map<String, dynamic> json) {
+    json.forEach((k, v) {
+      if (json[k] == "") json[k] = null;
+    });
     dayWeather = json['day_weather'];
     dayWeatherCode = json['day_weather_code'];
     dayWeatherShort = json['day_weather_short'];

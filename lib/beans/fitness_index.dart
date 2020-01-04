@@ -80,6 +80,9 @@ class FitnessIndex extends HiveObject {
   });
 
   FitnessIndex.fromJson(Map<String, dynamic> json) {
+    json.forEach((k, v) {
+      if (json[k] == "") json[k] = null;
+    });
     airConditioner =
         json['airconditioner'] != null ? Fitness.fromJson(json['airconditioner']) : null;
     allergy = json['allergy'] != null ? Fitness.fromJson(json['allergy']) : null;

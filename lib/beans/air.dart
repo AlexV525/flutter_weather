@@ -41,6 +41,9 @@ class Air extends HiveObject {
   });
 
   Air.fromJson(Map<String, dynamic> json) {
+    json.forEach((k, v) {
+      if (json[k] == "") json[k] = null;
+    });
     aqi = json['aqi'];
     aqiLevel = json['aqi_level'];
     aqiName = json['aqi_name'];

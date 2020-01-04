@@ -12,6 +12,8 @@ part '../beans/forecast_per_hour.dart';
 part '../beans/forecast_per_day.dart';
 part '../beans/fitness.dart';
 part '../beans/fitness_index.dart';
+part '../beans/limit.dart';
 part '../beans/observe.dart';
+part '../beans/rise.dart';
 
-part 'beans.g.dart';
+part 'adapter.g.dart';

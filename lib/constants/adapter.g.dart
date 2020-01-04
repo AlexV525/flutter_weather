@@ -6,6 +6,105 @@ part of 'beans.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
+class AirAdapter extends TypeAdapter<Air> {
+  @override
+  Air read(BinaryReader reader) {
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Air(
+      aqi: fields[0] as int,
+      aqiLevel: fields[1] as int,
+      aqiName: fields[2] as String,
+      co: fields[3] as String,
+      no2: fields[4] as String,
+      o3: fields[5] as String,
+      pm10: fields[6] as String,
+      pm25: fields[7] as String,
+      so2: fields[8] as String,
+      updateTime: fields[9] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, Air obj) {
+    writer
+      ..writeByte(10)
+      ..writeByte(0)
+      ..write(obj.aqi)
+      ..writeByte(1)
+      ..write(obj.aqiLevel)
+      ..writeByte(2)
+      ..write(obj.aqiName)
+      ..writeByte(3)
+      ..write(obj.co)
+      ..writeByte(4)
+      ..write(obj.no2)
+      ..writeByte(5)
+      ..write(obj.o3)
+      ..writeByte(6)
+      ..write(obj.pm10)
+      ..writeByte(7)
+      ..write(obj.pm25)
+      ..writeByte(8)
+      ..write(obj.so2)
+      ..writeByte(9)
+      ..write(obj.updateTime);
+  }
+}
+
+class AlarmAdapter extends TypeAdapter<Alarm> {
+  @override
+  Alarm read(BinaryReader reader) {
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Alarm(
+      city: fields[0] as String,
+      county: fields[1] as String,
+      detail: fields[2] as String,
+      info: fields[3] as String,
+      levelCode: fields[4] as String,
+      levelName: fields[5] as String,
+      province: fields[6] as String,
+      typeCode: fields[7] as String,
+      typeName: fields[8] as String,
+      updateTime: fields[9] as String,
+      url: fields[10] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, Alarm obj) {
+    writer
+      ..writeByte(11)
+      ..writeByte(0)
+      ..write(obj.city)
+      ..writeByte(1)
+      ..write(obj.county)
+      ..writeByte(2)
+      ..write(obj.detail)
+      ..writeByte(3)
+      ..write(obj.info)
+      ..writeByte(4)
+      ..write(obj.levelCode)
+      ..writeByte(5)
+      ..write(obj.levelName)
+      ..writeByte(6)
+      ..write(obj.province)
+      ..writeByte(7)
+      ..write(obj.typeCode)
+      ..writeByte(8)
+      ..write(obj.typeName)
+      ..writeByte(9)
+      ..write(obj.updateTime)
+      ..writeByte(10)
+      ..write(obj.url);
+  }
+}
+
 class ForecastPerHourAdapter extends TypeAdapter<ForecastPerHour> {
   @override
   ForecastPerHour read(BinaryReader reader) {
@@ -224,6 +323,105 @@ class FitnessIndexAdapter extends TypeAdapter<FitnessIndex> {
       ..writeByte(21)
       ..write(obj.umbrella)
       ..writeByte(22)
+      ..write(obj.time);
+  }
+}
+
+class LimitAdapter extends TypeAdapter<Limit> {
+  @override
+  Limit read(BinaryReader reader) {
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Limit(
+      tailNumber: fields[0] as String,
+      time: fields[1] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, Limit obj) {
+    writer
+      ..writeByte(2)
+      ..writeByte(0)
+      ..write(obj.tailNumber)
+      ..writeByte(1)
+      ..write(obj.time);
+  }
+}
+
+class ObserveAdapter extends TypeAdapter<Observe> {
+  @override
+  Observe read(BinaryReader reader) {
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Observe(
+      degree: fields[0] as String,
+      humidity: fields[1] as String,
+      precipitation: fields[2] as String,
+      pressure: fields[3] as String,
+      updateTime: fields[4] as String,
+      weather: fields[5] as String,
+      weatherCode: fields[6] as String,
+      weatherShort: fields[7] as String,
+      windDirection: fields[8] as String,
+      windPower: fields[9] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, Observe obj) {
+    writer
+      ..writeByte(10)
+      ..writeByte(0)
+      ..write(obj.degree)
+      ..writeByte(1)
+      ..write(obj.humidity)
+      ..writeByte(2)
+      ..write(obj.precipitation)
+      ..writeByte(3)
+      ..write(obj.pressure)
+      ..writeByte(4)
+      ..write(obj.updateTime)
+      ..writeByte(5)
+      ..write(obj.weather)
+      ..writeByte(6)
+      ..write(obj.weatherCode)
+      ..writeByte(7)
+      ..write(obj.weatherShort)
+      ..writeByte(8)
+      ..write(obj.windDirection)
+      ..writeByte(9)
+      ..write(obj.windPower);
+  }
+}
+
+class RiseAdapter extends TypeAdapter<Rise> {
+  @override
+  Rise read(BinaryReader reader) {
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Rise(
+      sunrise: fields[0] as String,
+      sunset: fields[1] as String,
+      time: fields[2] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, Rise obj) {
+    writer
+      ..writeByte(3)
+      ..writeByte(0)
+      ..write(obj.sunrise)
+      ..writeByte(1)
+      ..write(obj.sunset)
+      ..writeByte(2)
       ..write(obj.time);
   }
 }

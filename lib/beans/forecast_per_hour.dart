@@ -32,6 +32,9 @@ class ForecastPerHour extends HiveObject {
   });
 
   ForecastPerHour.fromJson(Map<String, dynamic> json) {
+    json.forEach((k, v) {
+      if (json[k] == "") json[k] = null;
+    });
     degree = int.tryParse(json['degree']);
     updateTime = json['update_time'];
     weather = json['weather'];
