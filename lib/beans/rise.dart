@@ -4,7 +4,7 @@
 ///
 part of '../constants/beans.dart';
 
-@HiveType()
+@HiveType(typeId: HiveAdapterTypeIds.rise)
 class Rise extends HiveObject {
   @HiveField(0)
   String sunrise;

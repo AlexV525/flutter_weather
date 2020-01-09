@@ -16,4 +16,16 @@ part '../beans/limit.dart';
 part '../beans/observe.dart';
 part '../beans/rise.dart';
 
-part 'adapter.g.dart';
+part 'beans.g.dart';
+
+class HiveAdapterTypeIds {
+  static const int air = 0;
+  static const int alarm = 1;
+  static const int fitness = 2;
+  static const int fitnessIndex = 3;
+  static const int forecastPerDay = 4;
+  static const int forecastPerHour = 5;
+  static const int limit = 6;
+  static const int observe = 7;
+  static const int rise = 8;
+}

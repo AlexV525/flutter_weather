@@ -4,7 +4,7 @@
 ///
 part of '../constants/beans.dart';
 
-@HiveType()
+@HiveType(typeId: HiveAdapterTypeIds.observe)
 class Observe extends HiveObject {
   @HiveField(0)
   String degree;

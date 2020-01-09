@@ -3,9 +3,11 @@
 /// [Date] 2020-01-01 23:35
 ///
 import 'dart:math' as math;
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import 'package:weather/constants/constants.dart';
 
@@ -21,18 +23,32 @@ class WeatherPageState extends State<WeatherPage> {
       Screens.width - sectionMargin.horizontal - sectionPadding.horizontal;
 
   final _scrollController = ScrollController();
-  DateTime today = DateTime.now();
 
   TextStyle get weekDetailTextStyle => TextStyle(
         fontSize: 10.0,
       );
 
+  WeatherProvider provider = WeatherProvider(province: "上海", city: "上海");
+  DateTime today = DateTime.now();
   double weekDetailTransform = 0.0;
 
   @override
   void initState() {
+    provider = WeatherProvider(province: "上海", city: "上海");
     _scrollController.addListener(scrollTransformListener);
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      provider.fetchWeather();
+    });
+
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _scrollController
+      ..removeListener(scrollTransformListener)
+      ..addListener(scrollTransformListener);
+    super.didChangeDependencies();
   }
 
   @override
@@ -66,9 +82,7 @@ class WeatherPageState extends State<WeatherPage> {
             height: 12.0,
             color: Colors.white,
           ),
-          Expanded(
-            child: Text(title, style: TextStyle(fontSize: 12.0)),
-          ),
+          Expanded(child: Text(title, style: TextStyle(fontSize: 12.0))),
         ],
       ),
     );
@@ -166,6 +180,53 @@ class WeatherPageState extends State<WeatherPage> {
         ),
       );
 
+  Widget _weekDetailPainter(List<ForecastPerDay> forecasts) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 50.0),
+      child: CustomPaint(
+        painter: WeekDetailPainter(
+          maxDegrees: forecasts.map((f) => f.maxDegree).toList(),
+          minDegrees: forecasts.map((f) => f.minDegree).toList(),
+        ),
+        child: Container(width: Screens.width, height: 100.0),
+      ),
+    );
+  }
+
+  Widget _weekDetailInfo(List<ForecastPerDay> forecasts) {
+    return SizedBox(
+      height: 80.0,
+      child: Row(
+        children: List<Widget>.generate(math.max(7, forecasts.length), (index) {
+          final _forecast = forecasts.elementAt(index);
+          final weekday = DateTime.parse(_forecast.time).weekday;
+          return Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  weekday != today.weekday ? weekdayString[weekday] : '今天',
+                  style: weekDetailTextStyle,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 5.0),
+                  child: Image.asset(
+                    "assets/icons/weather/w_${weatherIconsMap[_forecast.dayWeather]}.png",
+                    width: Screens.width / forecasts.length / 2,
+                  ),
+                ),
+                Text(
+                  _forecast.dayWeather,
+                  style: weekDetailTextStyle,
+                ),
+              ],
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
   Widget get weekDetail => Selector<WeatherProvider, List<ForecastPerDay>>(
         selector: (_, provider) => provider.forecastsPerDay,
         builder: (_, forecasts, __) => Container(
@@ -180,54 +241,55 @@ class WeatherPageState extends State<WeatherPage> {
               borderRadius: BorderRadius.circular(10.0),
               color: Colors.white.withOpacity(0.1 * weekDetailTransform),
             ),
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 50.0),
-                  child: CustomPaint(
-                    painter: WeekDetailPainter(
-                      maxDegrees: forecasts.map((f) => f.maxDegree).toList(),
-                      minDegrees: forecasts.map((f) => f.minDegree).toList(),
-                    ),
-                    child: Container(width: Screens.width, height: 100.0),
-                  ),
-                ),
-                SizedBox(
-                  height: 80.0,
-                  child: Row(
-                    children: List<Widget>.generate(math.max(7, forecasts.length), (index) {
-                      final _forecast = forecasts.elementAt(index);
-                      final weekday = DateTime.parse(_forecast.time).weekday;
-                      return Expanded(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text(
-                              weekday != today.weekday ? weekdayString[weekday] : '今天',
-                              style: weekDetailTextStyle,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(vertical: 5.0),
-                              child: Image.asset(
-                                "assets/icons/weather/w_${weatherIconsMap[_forecast.dayWeather]}.png",
-                                width: Screens.width / forecasts.length / 2,
-                              ),
-                            ),
-                            Text(
-                              _forecast.dayWeather,
-                              style: weekDetailTextStyle,
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
-                  ),
-                ),
-              ],
-            ),
+            child: Column(children: [_weekDetailPainter(forecasts), _weekDetailInfo(forecasts)]),
           ),
         ),
       );
+
+  Widget _hoursLinePainter(List<ForecastPerHour> forecasts) {
+    return Padding(
+      padding: EdgeInsets.only(top: 35.0, bottom: 25.0),
+      child: CustomPaint(
+        painter: HoursDetailPainter(
+          degrees: forecasts.map((f) => f.degree).toList(),
+        ),
+        child: SizedBox(
+          width: sectionContentWidth / 6 * forecasts.length,
+          height: 50.0,
+        ),
+      ),
+    );
+  }
+
+  Widget _hoursInfo(List<ForecastPerHour> forecasts) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 10.0),
+      child: Row(
+        children: List<Widget>.generate(forecasts.length, (index) {
+          final _forecast = forecasts.elementAt(index);
+          final _indexHour = today.hour + index;
+          final hour = _indexHour - (_indexHour ~/ 24) * 24;
+          return SizedBox(
+            width: sectionContentWidth / 6,
+            height: 70.0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Text(
+                  "$hour时",
+                  style: TextStyle(fontSize: 12.0),
+                ),
+                Image.asset(
+                  "assets/icons/weather/w_${weatherIconsMap[_forecast.weather]}.png",
+                  width: Screens.width / 16,
+                ),
+              ],
+            ),
+          );
+        }),
+      ),
+    );
+  }
 
   Widget get hoursDetail => Selector<WeatherProvider, List<ForecastPerHour>>(
         selector: (_, provider) => provider.forecastsPerHour,
@@ -240,52 +302,12 @@ class WeatherPageState extends State<WeatherPage> {
           ),
           child: Column(
             children: [
-              sectionHeader(context, "每小时预报 (48小时)"),
+              sectionHeader(context, "每小时预报"),
               Expanded(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(top: 35.0, bottom: 25.0),
-                        child: CustomPaint(
-                          painter: HoursDetailPainter(
-                            degrees: forecasts.map((f) => f.degree).toList(),
-                          ),
-                          child: SizedBox(
-                            width: sectionContentWidth / 6 * forecasts.length,
-                            height: 50.0,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 10.0),
-                        child: Row(
-                          children: List<Widget>.generate(forecasts.length, (index) {
-                            final _forecast = forecasts.elementAt(index);
-                            final _indexHour = today.hour + index;
-                            final hour = _indexHour - (_indexHour ~/ 24) * 24;
-                            return SizedBox(
-                              width: sectionContentWidth / 6,
-                              height: 70.0,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  Text(
-                                    "$hour时",
-                                    style: TextStyle(fontSize: 12.0),
-                                  ),
-                                  Image.asset(
-                                    "assets/icons/weather/w_${weatherIconsMap[_forecast.weather]}.png",
-                                    width: Screens.width / 16,
-                                  ),
-                                ],
-                              ),
-                            );
-                          }),
-                        ),
-                      ),
-                    ],
+                    children: <Widget>[_hoursLinePainter(forecasts), _hoursInfo(forecasts)],
                   ),
                 ),
               ),
@@ -294,36 +316,151 @@ class WeatherPageState extends State<WeatherPage> {
         ),
       );
 
+  Widget _lifeIndexDetailIcon(Fitness fitness) {
+    return SizedBox(
+      width: 64.0,
+      child: Center(
+        child: Image.asset(
+          "assets/icons/index/${fitness.name}.png",
+          width: 36.0,
+          height: 36.0,
+        ),
+      ),
+    );
+  }
+
+  Widget _lifeIndexDetailName(Fitness fitness) {
+    return Text(
+      fitness.name,
+      style: TextStyle(fontSize: 14.0),
+    );
+  }
+
+  Widget _lifeIndexDetailInfo(Fitness fitness) {
+    return Container(
+      margin: EdgeInsets.only(left: 6.0),
+      padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4.0),
+        color: Colors.white24,
+      ),
+      child: Center(
+        child: Text(
+          fitness.info,
+          style: TextStyle(fontSize: 10.0),
+        ),
+      ),
+    );
+  }
+
+  Widget _lifeIndexDetailsDetail(Fitness fitness) {
+    return Container(
+      margin: EdgeInsets.only(right: 10.0),
+      child: Text(
+        "${fitness.detail.split("。")[0]}。",
+        style: TextStyle(
+          color: Colors.white70,
+          fontSize: 12.0,
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+  }
+
+  Widget _lifeIndexDetail(Fitness fitness) {
+    return SizedBox(
+      height: 50.0,
+      child: Row(
+        children: <Widget>[
+          _lifeIndexDetailIcon(fitness),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    _lifeIndexDetailName(fitness),
+                    _lifeIndexDetailInfo(fitness),
+                  ],
+                ),
+                _lifeIndexDetailsDetail(fitness),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget get lifeIndexesDetail => Selector<WeatherProvider, FitnessIndex>(
+        selector: (_, provider) => provider.fitnessIndex,
+        builder: (_, fitnessIndex, __) {
+          final indexes = [
+            fitnessIndex.ultraviolet,
+            fitnessIndex.sports,
+            fitnessIndex.clothes,
+            fitnessIndex.carWash,
+            fitnessIndex.diffusion,
+          ];
+          return Container(
+            margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            padding: EdgeInsets.only(bottom: 10.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              color: Colors.white.withOpacity(0.1),
+            ),
+            child: Column(
+              children: [
+                sectionHeader(context, "生活指数"),
+                ListView.separated(
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  separatorBuilder: (_, __) => Container(
+                    margin: EdgeInsets.only(left: 64.0),
+                    child: Divider(),
+                  ),
+                  itemCount: indexes.length,
+                  itemBuilder: (_, index) => _lifeIndexDetail(indexes[index]),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(6, 19, 35, 1.0),
       body: ChangeNotifierProvider(
-        create: (_) => WeatherProvider(
-          province: "上海",
-          city: "上海",
-        )..fetchWeather(),
+        create: (_) => provider,
         child: Column(
           children: <Widget>[
             topBar,
             Expanded(
               child: Consumer<WeatherProvider>(
-                builder: (_, provider, __) => AnimatedSwitcher(
-                  duration: kTabScrollDuration,
-                  child: provider.isFull
-                      ? ListView(
-                          controller: _scrollController,
-                          padding: EdgeInsets.only(bottom: Screens.bottomSafeHeight),
-                          children: <Widget>[
-                            status,
-                            temperature,
-                            airCondition,
-                            weekDetail,
-                            hoursDetail,
-                          ],
-                        )
-                      : Center(child: CupertinoActivityIndicator()),
-                ),
+                builder: (_, provider, __) {
+                  return AnimatedSwitcher(
+                    duration: kTabScrollDuration,
+                    child: provider.isFull
+                        ? ListView(
+                            controller: _scrollController,
+                            padding: EdgeInsets.only(bottom: Screens.bottomSafeHeight),
+                            children: <Widget>[
+                              status,
+                              temperature,
+                              airCondition,
+                              weekDetail,
+                              hoursDetail,
+                              lifeIndexesDetail,
+                            ],
+                          )
+                        : Center(child: CupertinoActivityIndicator()),
+                  );
+                },
               ),
             ),
           ],

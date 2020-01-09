@@ -3,7 +3,6 @@
 /// [Date] 2020-01-03 17:43
 ///
 import 'package:flutter/material.dart';
-import 'package:dartx/dartx.dart';
 
 import 'package:weather/constants/constants.dart';
 
@@ -108,23 +107,24 @@ class WeatherProvider extends ChangeNotifier {
 
     _air = Air.fromJson(data['air']);
     _alarms = data['alarm'].values.map((alarm) => Alarm.fromJson(alarm)).toList().cast<Alarm>();
-    _forecastsPerHour = data['forecast_1h']
+    _forecastsPerHour = (data['forecast_1h'] as Map)
         .values
+        .toList()
+        .sublist(0, 24)
         .map((forecast) => ForecastPerHour.fromJson(forecast))
         .toList()
         .cast<ForecastPerHour>();
-    _forecastsPerDay = data['forecast_24h']
+    _forecastsPerDay = (data['forecast_24h'] as Map)
         .values
         .map((forecast) => ForecastPerDay.fromJson(forecast))
         .toList()
-        .sublist(1, 8)
         .cast<ForecastPerDay>();
     _fitnessIndex = FitnessIndex.fromJson(data['index']);
     _limit = Limit.fromJson(data['limit']);
     _observe = Observe.fromJson(data['observe']);
     _rises = data['rise'].values.map((rise) => Rise.fromJson(rise)).toList().cast<Rise>();
 
-    await Future.delayed(2.seconds);
+    await Future.delayed(1.seconds);
     notifyListeners();
   }
 }

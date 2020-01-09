@@ -8,6 +8,9 @@ part of 'beans.dart';
 
 class AirAdapter extends TypeAdapter<Air> {
   @override
+  final typeId = 0;
+
+  @override
   Air read(BinaryReader reader) {
     var numOfFields = reader.readByte();
     var fields = <int, dynamic>{
@@ -55,6 +58,9 @@ class AirAdapter extends TypeAdapter<Air> {
 }
 
 class AlarmAdapter extends TypeAdapter<Alarm> {
+  @override
+  final typeId = 1;
+
   @override
   Alarm read(BinaryReader reader) {
     var numOfFields = reader.readByte();
@@ -107,6 +113,9 @@ class AlarmAdapter extends TypeAdapter<Alarm> {
 
 class ForecastPerHourAdapter extends TypeAdapter<ForecastPerHour> {
   @override
+  final typeId = 5;
+
+  @override
   ForecastPerHour read(BinaryReader reader) {
     var numOfFields = reader.readByte();
     var fields = <int, dynamic>{
@@ -145,6 +154,9 @@ class ForecastPerHourAdapter extends TypeAdapter<ForecastPerHour> {
 }
 
 class ForecastPerDayAdapter extends TypeAdapter<ForecastPerDay> {
+  @override
+  final typeId = 4;
+
   @override
   ForecastPerDay read(BinaryReader reader) {
     var numOfFields = reader.readByte();
@@ -215,6 +227,9 @@ class ForecastPerDayAdapter extends TypeAdapter<ForecastPerDay> {
 
 class FitnessAdapter extends TypeAdapter<Fitness> {
   @override
+  final typeId = 2;
+
+  @override
   Fitness read(BinaryReader reader) {
     var numOfFields = reader.readByte();
     var fields = <int, dynamic>{
@@ -241,6 +256,9 @@ class FitnessAdapter extends TypeAdapter<Fitness> {
 }
 
 class FitnessIndexAdapter extends TypeAdapter<FitnessIndex> {
+  @override
+  final typeId = 3;
+
   @override
   FitnessIndex read(BinaryReader reader) {
     var numOfFields = reader.readByte();
@@ -329,6 +347,9 @@ class FitnessIndexAdapter extends TypeAdapter<FitnessIndex> {
 
 class LimitAdapter extends TypeAdapter<Limit> {
   @override
+  final typeId = 6;
+
+  @override
   Limit read(BinaryReader reader) {
     var numOfFields = reader.readByte();
     var fields = <int, dynamic>{
@@ -352,6 +373,9 @@ class LimitAdapter extends TypeAdapter<Limit> {
 }
 
 class ObserveAdapter extends TypeAdapter<Observe> {
+  @override
+  final typeId = 7;
+
   @override
   Observe read(BinaryReader reader) {
     var numOfFields = reader.readByte();
@@ -400,6 +424,9 @@ class ObserveAdapter extends TypeAdapter<Observe> {
 }
 
 class RiseAdapter extends TypeAdapter<Rise> {
+  @override
+  final typeId = 8;
+
   @override
   Rise read(BinaryReader reader) {
     var numOfFields = reader.readByte();

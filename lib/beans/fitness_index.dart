@@ -4,7 +4,7 @@
 ///
 part of '../constants/beans.dart';
 
-@HiveType()
+@HiveType(typeId: HiveAdapterTypeIds.fitnessIndex)
 class FitnessIndex extends HiveObject {
   @HiveField(0)
   Fitness airConditioner;

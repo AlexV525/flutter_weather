@@ -4,7 +4,7 @@
 ///
 part of '../constants/beans.dart';
 
-@HiveType()
+@HiveType(typeId: HiveAdapterTypeIds.forecastPerDay)
 class ForecastPerDay extends HiveObject {
   @HiveField(0)
   String dayWeather;

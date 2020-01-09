@@ -4,7 +4,7 @@
 ///
 part of '../constants/beans.dart';
 
-@HiveType()
+@HiveType(typeId: HiveAdapterTypeIds.fitness)
 class Fitness extends HiveObject {
   @HiveField(0)
   String detail;

@@ -2,6 +2,8 @@
 /// [Author] Alex (https://github.com/AlexVincent525)
 /// [Date] 2020-01-01 14:26
 ///
+export 'package:dartx/dartx.dart';
+
 export 'package:weather/apis/api.dart';
 
 export 'package:weather/constants/beans.dart';

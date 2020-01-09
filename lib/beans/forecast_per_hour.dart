@@ -4,7 +4,7 @@
 ///
 part of '../constants/beans.dart';
 
-@HiveType()
+@HiveType(typeId: HiveAdapterTypeIds.forecastPerHour)
 class ForecastPerHour extends HiveObject {
   @HiveField(0)
   int degree;

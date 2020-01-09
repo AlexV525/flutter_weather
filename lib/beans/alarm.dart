@@ -4,7 +4,7 @@
 ///
 part of '../constants/beans.dart';
 
-@HiveType()
+@HiveType(typeId: HiveAdapterTypeIds.alarm)
 class Alarm extends HiveObject {
   @HiveField(0)
   String city;

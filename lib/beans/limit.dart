@@ -4,7 +4,7 @@
 ///
 part of '../constants/beans.dart';
 
-@HiveType()
+@HiveType(typeId: HiveAdapterTypeIds.limit)
 class Limit extends HiveObject {
   @HiveField(0)
   String tailNumber;

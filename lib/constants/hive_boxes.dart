@@ -7,16 +7,14 @@ import 'package:hive/hive.dart';
 import 'package:weather/constants/constants.dart';
 
 class HiveBoxes {
-  static int adapterIndex = 0;
   static Box<ForecastPerDay> forecastPerDayBox;
   static Box<ForecastPerHour> forecastPerHourBox;
 
   static Future openBoxes() async {
-    Hive.registerAdapter(ForecastPerDayAdapter(), adapterIndex++);
+    Hive.registerAdapter(ForecastPerDayAdapter());
 
     forecastPerDayBox = await Hive.openBox<ForecastPerDay>('forecast_per_day');
-    forecastPerHourBox =
-        await Hive.openBox<ForecastPerHour>('forecast_per_hour');
+    forecastPerHourBox = await Hive.openBox<ForecastPerHour>('forecast_per_hour');
   }
 
   static Future clearBoxes() async {
